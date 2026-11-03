@@ -173,8 +173,8 @@ display(spark.table(GOLD).orderBy("window_start", "product_id"))
 # MAGIC - **Bronze:** four original JSON messages and source coordinates.
 # MAGIC - **Silver:** three valid events; repeated `event_id` values are deduplicated.
 # MAGIC - **Quarantine:** `evt-bad` with `missing_user_id`.
-# MAGIC - **Gold:** two purchase windows for `sku-7`; totals are 2 purchases, 49.98 revenue,
-# MAGIC   and 3 units across the two rows.
+# MAGIC - **Gold:** the older, closed `sku-7` purchase window shows 1 purchase, 39.98 revenue,
+# MAGIC   and 2 units. The latest purchase window waits for a later event to move the watermark.
 # MAGIC
 # MAGIC Each layer has its own checkpoint under the Unity Catalog volume. Keep those files
 # MAGIC between runs. To start a fresh demo, remove the four output tables and the four
