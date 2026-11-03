@@ -59,6 +59,14 @@ Then enter one JSON line per event, using `event_id` as the key:
 evt-1001:{"event_id":"evt-1001","event_type":"purchase","user_id":"u-42","product_id":"sku-7","quantity":2,"amount":39.98,"event_ts":"2026-11-03T04:00:00Z"}
 ```
 
+## Run in Databricks Free Edition
+
+Import [\x60databricks/Databricks_Pipeline.py\x60](databricks/Databricks_Pipeline.py) as a notebook, select **Serverless** compute, and run all cells from top to bottom. It creates a \x60realtime_pipeline\x60 schema, a checkpoint volume, and Bronze/Silver/Quarantine/Gold Delta tables. The default demo seeds four sample events so the whole transformation can be explored without Kafka; inspect each layer in the notebook output or Catalog Explorer.
+
+Free Edition uses serverless compute. This notebook uses Spark Structured Streaming's \x60AvailableNow\x60 trigger, so each run processes the messages currently available and exits; rerun it to process new messages. To read real Kafka instead, change \x60SOURCE_MODE\x60 to \x60kafka\x60 and configure the broker, topic, and provider authentication in the notebook. The broker must be reachable from serverless compute. A Kafka broker running at \x60localhost:9092\x60 in Docker on your laptop is not reachable from Databricks. Free Edition restricts outbound network access, so check the workspace's current [Free Edition limitations](https://docs.databricks.com/aws/en/getting-started/free-edition-limitations) before choosing a broker.
+
+The sample notebook uses its own managed Delta tables and unique Unity Catalog volume checkpoints; it does not overwrite the local Docker pipeline's data. Keep the checkpoint files to preserve incremental progress. For a fresh demo, remove the notebook's output tables and checkpoint subfolders before rerunning.
+
 The Kafka topic should be partitioned by a stable key such as `event_id` or `user_id`; producers should set the Kafka message key so events with the same key retain partition ordering. Increase topic partitions and Spark executor capacity as throughput grows. Set `MAX_OFFSETS_PER_TRIGGER` and `SHUFFLE_PARTITIONS` to control per-trigger input and processing parallelism.
 
 ## Data contract and quality
