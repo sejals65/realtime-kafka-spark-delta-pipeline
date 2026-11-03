@@ -1,0 +1,9 @@
+.git
+.venv
+__pycache__
+*.py[cod]
+*.egg-info
+data
+checkpoints
+runtime
+.DS_Store

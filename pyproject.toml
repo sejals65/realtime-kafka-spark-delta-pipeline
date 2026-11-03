@@ -1,0 +1,13 @@
+[project]
+name = "kafka-spark-delta-pipeline"
+version = "0.1.0"
+description = "A layered real-time event pipeline with Kafka, Spark Structured Streaming, and Delta Lake"
+requires-python = ">=3.10"
+dependencies = ["pyspark==3.5.5", "delta-spark==3.2.0"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 100
